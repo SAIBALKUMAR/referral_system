@@ -1,0 +1,11 @@
+{
+  "name": "referral-system",
+  "version": "1.0.0",
+  "description": "A simple JavaScript project for Referral System.",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "author": "",
+  "license": "MIT"
+}
