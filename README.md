@@ -68,6 +68,12 @@ A comprehensive referral management system with network analysis, growth simulat
 3. `totalReferralCount`: O(V + E)
    - BFS traversal for counting referrals
 
+4. `topReferrersByReach`: O(V(V + E) + V log V)
+   - Gets all users: O(V)
+   - Calculates reach score for each user: O(V(V + E))
+   - Sorts users by score: O(V log V)
+   - Final top-k selection: O(k)
+
 ### Simulation:
 1. `simulate`: O(D × R)
    - D: number of days
@@ -87,6 +93,7 @@ A comprehensive referral management system with network analysis, growth simulat
    - BFS/DFS visited sets: O(V)
    - Path computation: O(V)
    - Simulation results: O(D) for D days
+   - Top referrers array: O(V) to store all referrer scores
 
 ## Usage
 

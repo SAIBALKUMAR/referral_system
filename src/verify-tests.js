@@ -110,6 +110,19 @@ if (runTest('Network Analysis', () => {
     // Test centrality
     const centrality = graph.flowCentrality();
     assert(centrality[0] === 'B', "Most central node incorrect");
+
+    // Test unique reach expansion
+    const topInfluencers = graph.uniqueReachExpansion(2);
+    assert(topInfluencers.length === 2, "Should return requested number of influencers");
+    assert(topInfluencers[0] === 'A', "A should be top influencer");
+
+    // Test top referrers by reach
+    const topReferrers = graph.topReferrersByReach(2);
+    assert(topReferrers.length === 2, "Should return requested number of referrers");
+    assertObjectHasProperties(topReferrers[0], ['user', 'score', 'details']);
+    assert(topReferrers[0].user === 'A', "A should be top referrer");
+    assert(topReferrers[0].score > topReferrers[1].score, "Scores should be in descending order");
+    assert(topReferrers[0].details.total === 4, "Should have correct total reach");
 })) passedTests++;
 
 // 3. Growth Simulation Test Suite
@@ -136,6 +149,14 @@ if (runTest('Growth Simulation', () => {
     const secondSim = graph.simulate(0.5, 10);
     assert(Math.abs(firstSim[9] - secondSim[9]) < firstSim[9] * 0.5, 
         "Independent simulations should be roughly similar");
+
+    // Test days to target calculation
+    const daysTo50 = graph.days_to_target(0.5, 50);
+    assert(typeof daysTo50 === 'number' && daysTo50 > 0, 
+        "Should return positive number of days");
+    const daysTo100 = graph.days_to_target(0.5, 100);
+    assert(daysTo100 > daysTo50, 
+        "More hires should require more days");
 })) passedTests++;
 
 // 4. Bonus Optimization Test Suite

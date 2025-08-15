@@ -291,6 +291,13 @@ runTest('Edge Cases and Error Handling', () => {
         "New user should have no referrals");
     assert(testGraph.totalReferralCount('Solo').total === 0,
         "Solo user should have no referral count");
+    
+    // Test topReferrersByReach edge cases
+    const emptyTopReferrers = testGraph.topReferrersByReach(1);
+    assert(emptyTopReferrers.length === 1,
+        "Should return one referrer even for empty network");
+    assert(emptyTopReferrers[0].score === 0,
+        "Solo user should have zero reach score");
 
     // Test invalid referral attempts
     const nullReferrer = testGraph.addReferral(null, 'Test');
@@ -353,6 +360,19 @@ runTest('Complex Network Scenarios', () => {
         testGraph.calculateReachScore(user));
     assert(scores[0] > scores[1] && scores[1] > scores[2],
         "Reach scores should decrease with network depth");
+
+    // Test topReferrersByReach functionality
+    const topReferrers = testGraph.topReferrersByReach(3);
+    assert(topReferrers.length === 3,
+        "Should return exactly 3 top referrers");
+    assert(topReferrers[0].user === 'Root',
+        "Root should be the top referrer due to largest network");
+    assert(topReferrers[0].score > topReferrers[1].score,
+        "Scores should be in descending order");
+    assertObjectHasProperties(topReferrers[0], ['user', 'score', 'details'],
+        "Each top referrer should have user, score, and details properties");
+    assert(topReferrers[0].details.total === 11,
+        "Root should have correct total reach (3 direct + 8 indirect)");
 });
 
 // 9. Test Growth Patterns
